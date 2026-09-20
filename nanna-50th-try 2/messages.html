@@ -42,7 +42,7 @@ nav{
 }
 
 .brand{
-  font-family:"Playfair Display";
+  font-family:"Playfair Display",serif;
   font-size:20px
 }
 
@@ -85,8 +85,16 @@ nav{
   margin:0 auto 28px
 }
 
+.eyebrow{
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  font-size:12px;
+  color:#a0834b;
+  margin-bottom:14px
+}
+
 .section-head h1{
-  font-family:"Playfair Display";
+  font-family:"Playfair Display",serif;
   font-size:clamp(42px,5vw,64px);
   margin:0;
   color:var(--ink)
@@ -97,16 +105,11 @@ nav{
   line-height:1.6
 }
 
-/* MESSAGE GRID */
-
 .message-wall{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:20px;
-  align-items:start
+  gap:20px
 }
-
-/* MESSAGE CARD */
 
 .card{
   background:var(--cream);
@@ -117,12 +120,11 @@ nav{
   min-height:175px;
   box-shadow:0 12px 30px rgba(88,65,52,.12);
   cursor:pointer;
-  transition:.2s;
-  overflow:hidden
+  transition:.2s
 }
 
 .card:hover{
-  transform:translateY(-5px) rotate(0deg)
+  transform:translateY(-5px) rotate(0)
 }
 
 .card:nth-child(3n+1){
@@ -142,33 +144,13 @@ nav{
   height:125px;
   object-fit:cover;
   border-radius:12px;
-  margin-bottom:14px;
-  display:block
+  margin-bottom:14px
 }
-
-/*
-  THIS IS THE IMPORTANT CHANGE:
-  Long messages are limited inside the card.
-*/
 
 .msg{
-  font-family:"Playfair Display";
+  font-family:"Playfair Display",serif;
   font-size:19px;
-  line-height:1.5;
-
-  display:-webkit-box;
-  -webkit-box-orient:vertical;
-  -webkit-line-clamp:5;
-  overflow:hidden
-}
-
-.read-more{
-  margin-top:10px;
-  font-family:"DM Sans",sans-serif;
-  font-size:12px;
-  font-weight:700;
-  color:#a0834b;
-  letter-spacing:.02em
+  line-height:1.5
 }
 
 .from{
@@ -184,8 +166,6 @@ nav{
   grid-column:1/-1;
   padding:40px
 }
-
-/* MODAL */
 
 .modal{
   position:fixed;
@@ -210,8 +190,7 @@ nav{
   border-radius:22px;
   padding:32px;
   color:var(--ink);
-  position:relative;
-  box-shadow:0 25px 70px rgba(0,0,0,.3)
+  position:relative
 }
 
 .close{
@@ -227,21 +206,6 @@ nav{
   font-size:20px
 }
 
-.full-message{
-  font-family:"Playfair Display";
-  font-size:27px;
-  line-height:1.55;
-  white-space:pre-wrap;
-  padding-right:10px
-}
-
-.full-message-from{
-  margin-top:22px;
-  font-weight:600
-}
-
-/* MOBILE */
-
 @media(max-width:850px){
   .message-wall{
     grid-template-columns:repeat(2,1fr)
@@ -251,8 +215,8 @@ nav{
 @media(max-width:600px){
 
   nav{
-    min-height:62px;
     height:auto;
+    min-height:62px;
     padding:10px 14px;
     gap:7px;
     flex-wrap:wrap;
@@ -260,8 +224,7 @@ nav{
   }
 
   .brand{
-    font-size:17px;
-    white-space:nowrap
+    font-size:17px
   }
 
   .links{
@@ -271,13 +234,7 @@ nav{
   }
 
   .links a{
-    font-size:12px;
-    white-space:nowrap
-  }
-
-  .page{
-    min-height:calc(100vh - 62px);
-    padding:18px 12px
+    font-size:12px
   }
 
   .messages-page{
@@ -285,27 +242,22 @@ nav{
   }
 
   .section-head h1{
-    font-size:40px;
-    line-height:1
-  }
-
-  .section-head p{
-    font-size:14px
+    font-size:40px
   }
 
   .message-wall{
     grid-template-columns:1fr;
-    gap:15px
+    gap:14px
   }
 
   .card{
-    padding:20px;
-    min-height:150px
+    padding:19px;
+    min-height:150px;
+    transform:none!important
   }
 
   .msg{
-    font-size:18px;
-    -webkit-line-clamp:5
+    font-size:18px
   }
 
   .modal{
@@ -313,18 +265,8 @@ nav{
   }
 
   .modal-box{
-    max-height:92svh;
-    padding:26px 20px
-  }
-
-  .full-message{
-    font-size:23px;
-    line-height:1.5
-  }
-
-  .close{
-    right:10px;
-    top:10px
+    padding:25px 18px;
+    max-height:92svh
   }
 }
 </style>
@@ -343,14 +285,11 @@ nav{
 </nav>
 
 <main class="page messages-page">
-
   <div class="messages-inner">
 
     <div class="section-head">
       <div class="eyebrow">From everyone who loves you</div>
-
       <h1>Birthday Messages</h1>
-
       <p>Click any card to read the full message.</p>
     </div>
 
@@ -359,237 +298,183 @@ nav{
     </div>
 
   </div>
-
 </main>
 
-<!-- FULL MESSAGE POPUP -->
-
 <div class="modal" id="viewModal">
-
   <div class="modal-box">
-
     <button class="close" onclick="closeModal()">×</button>
-
     <div id="viewContent"></div>
-
   </div>
-
 </div>
 
 <script>
 
-const SUPABASE_URL="https://yhgmtvcaptgvmqnczeuc.supabase.co";
+const SUPABASE_URL =
+  "https://yhgmtvcaptgvmqnczeuc.supabase.co";
 
-const SUPABASE_ANON_KEY="sb_publishable_DUCqevIEFnRrJL4UuwiUoQ_wRYgIYD0";
+const SUPABASE_ANON_KEY =
+  "sb_publishable_DUCqevIEFnRrJL4UuwiUoQ_wRYgIYD0";
 
-let sb=null;
+let sb = null;
 
 
-/* CONNECT TO SUPABASE */
+/* ---------------- SUPABASE ---------------- */
 
 async function initSite(){
 
-  if(SUPABASE_URL.startsWith("YOUR_")){
-    loadDemo();
-    return
-  }
+  const { createClient } =
+    await import("https://esm.sh/@supabase/supabase-js@2");
 
-  const {createClient}=await import(
-    "https://esm.sh/@supabase/supabase-js@2"
-  );
-
-  sb=createClient(
+  sb = createClient(
     SUPABASE_URL,
     SUPABASE_ANON_KEY
   );
 
-  if(document.getElementById("wall")){
+  await loadMessages();
 
-    await loadMessages();
-
-    sb.channel("messages-live")
-      .on(
-        "postgres_changes",
-        {
-          event:"*",
-          schema:"public",
-          table:"messages"
-        },
-        loadMessages
-      )
-      .subscribe();
-
-  }
-
+  sb.channel("messages-live")
+    .on(
+      "postgres_changes",
+      {
+        event:"*",
+        schema:"public",
+        table:"messages"
+      },
+      loadMessages
+    )
+    .subscribe();
 }
 
 
-/* DEMO MODE */
-
-function loadDemo(){
-
-  if(document.getElementById("wall")){
-
-    const demo=[
-      [
-        "A very happy 50th! Wishing you endless happiness, laughter and wonderful memories.",
-        "Family"
-      ],
-      [
-        "Cheers to five decades of being absolutely wonderful. Here’s to many more adventures.",
-        "A Friend"
-      ],
-      [
-        "Happy birthday! Thank you for all the love, stories and laughter you’ve given us.",
-        "With love"
-      ]
-    ];
-
-    renderMessages(
-      demo.map((x,i)=>({
-        id:i,
-        name:x[1],
-        message:x[0],
-        photo_url:null
-      }))
-    );
-
-  }
-
-}
-
-
-/* LOAD MESSAGES */
+/* ---------------- LOAD MESSAGES ---------------- */
 
 async function loadMessages(){
 
-  if(!sb)return;
+  if(!sb) return;
 
-  const {data,error}=await sb
-    .from("messages")
-    .select("*")
-    .eq("visible",true)
-    .order("created_at",{ascending:false});
+  const { data, error } =
+    await sb
+      .from("messages")
+      .select("*")
+      .eq("visible",true)
+      .order("created_at",{ascending:false});
 
-  if(!error){
-
-    renderMessages(data || []);
-
-  }else{
-
-    document.getElementById("wall").innerHTML=
-      '<div class="empty">Could not load messages. Please refresh and try again.</div>';
-
+  if(error){
     console.error(error);
 
+    document.getElementById("wall").innerHTML =
+      '<div class="empty">Unable to load messages right now.</div>';
+
+    return;
   }
 
+  renderMessages(data || []);
 }
 
 
-/* ESCAPE HTML */
-
-function escapeHtml(s){
-
-  return String(s).replace(
-    /[&<>"']/g,
-    c=>({
-      "&":"&amp;",
-      "<":"&lt;",
-      ">":"&gt;",
-      '"':"&quot;",
-      "'":"&#039;"
-    }[c])
-  );
-
-}
-
-
-/* CREATE MESSAGE CARDS */
+/* ---------------- DISPLAY MESSAGES ---------------- */
 
 function renderMessages(data){
 
-  const wall=document.getElementById("wall");
+  const wall =
+    document.getElementById("wall");
 
-  if(!wall)return;
+  if(!wall) return;
 
   if(!data.length){
 
-    wall.innerHTML=
+    wall.innerHTML =
       '<div class="empty">Be the first to leave a birthday wish.</div>';
 
     return;
-
   }
 
-  wall.innerHTML=data.map(m=>{
+  wall.innerHTML = data.map(m => {
 
-    const message=String(m.message || "");
+    const safeMessage =
+      escapeHtml(m.message);
 
-    /*
-      Only show "Read full message" when
-      the message is actually long.
-    */
+    const safeName =
+      escapeHtml(m.name);
 
-    const isLong=message.length>260;
+    const photo =
+      m.photo_url
+      ? `<img src="${escapeAttribute(m.photo_url)}" alt="Birthday memory">`
+      : "";
 
     return `
-
       <article
         class="card"
-        onclick='openMessage(${JSON.stringify(m).replaceAll("'","&#39;")})'
+        onclick="openMessage(${JSON.stringify(m).replace(/"/g,'&quot;')})"
       >
-
-        ${
-          m.photo_url
-          ?
-          `<img src="${escapeHtml(m.photo_url)}" alt="Birthday photo">`
-          :
-          ""
-        }
+        ${photo}
 
         <div class="msg">
-          ${escapeHtml(message)}
+          ${safeMessage}
         </div>
 
-        ${
-          isLong
-          ?
-          `<div class="read-more">Read full message →</div>`
-          :
-          ""
-        }
-
         <div class="from">
-          — ${escapeHtml(m.name)}
+          — ${safeName}
         </div>
 
       </article>
-
     `;
 
   }).join("");
-
 }
 
 
-/* OPEN FULL MESSAGE */
+/* ---------------- SECURITY ---------------- */
+
+function escapeHtml(value){
+
+  return String(value).replace(
+    /[&<>"']/g,
+    function(char){
+      return {
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+      }[char];
+    }
+  );
+}
+
+function escapeAttribute(value){
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/"/g,"&quot;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;");
+}
+
+
+/* ---------------- MESSAGE MODAL ---------------- */
 
 function openMessage(m){
 
-  document.getElementById("viewContent").innerHTML=`
+  const photo =
+    m.photo_url
+    ? `
+      <img
+        src="${escapeAttribute(m.photo_url)}"
+        style="
+          width:100%;
+          max-height:360px;
+          object-fit:cover;
+          border-radius:14px;
+          margin-bottom:22px;
+        "
+      >
+    `
+    : "";
 
-    ${
-      m.photo_url
-      ?
-      `<img
-        src="${escapeHtml(m.photo_url)}"
-        style="width:100%;max-height:360px;object-fit:cover;border-radius:14px;margin-bottom:22px"
-        alt="Birthday photo"
-      >`
-      :
-      ""
-    }
+  document.getElementById("viewContent").innerHTML = `
+
+    ${photo}
 
     <div
       class="eyebrow"
@@ -598,11 +483,22 @@ function openMessage(m){
       A birthday wish
     </div>
 
-    <div class="full-message">
+    <div
+      style="
+        font-family:'Playfair Display',serif;
+        font-size:28px;
+        line-height:1.5
+      "
+    >
       ${escapeHtml(m.message)}
     </div>
 
-    <div class="full-message-from">
+    <div
+      style="
+        margin-top:22px;
+        font-weight:600
+      "
+    >
       — ${escapeHtml(m.name)}
     </div>
 
@@ -611,38 +507,33 @@ function openMessage(m){
   document
     .getElementById("viewModal")
     .classList.add("show");
-
 }
 
-
-/* CLOSE POPUP */
 
 function closeModal(){
 
   document
     .getElementById("viewModal")
     .classList.remove("show");
-
 }
 
 
-/* CLOSE IF CLICKING OUTSIDE */
+/* Close modal when clicking outside */
 
-document.getElementById("viewModal").addEventListener(
-  "click",
-  function(e){
+document
+  .getElementById("viewModal")
+  .addEventListener("click",function(e){
 
-    if(e.target===this){
+    if(e.target === this){
       closeModal();
     }
 
-  }
-);
+  });
 
 
-/* START */
+/* ---------------- START ---------------- */
 
-if(document.readyState==="loading"){
+if(document.readyState === "loading"){
 
   document.addEventListener(
     "DOMContentLoaded",
